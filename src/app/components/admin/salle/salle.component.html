@@ -1,0 +1,91 @@
+<div style="width: 900px;">
+    <h1 style="margin-bottom: 20px; text-align: center;">List Departments</h1>
+    <div >
+        <h4></h4>
+        <h4></h4>
+    </div>
+    <table class="table">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Libelle</th>
+            <th scope="col">Action</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let salle of salServ.list" style="width: 100%; text-align: center;">
+            <th scope="row">{{salle.id}}</th>
+            <td>{{salle.libelle}}</td>
+            <td>
+            <button (click)="onUpdateClicked(salle.id!)" class="btn p-2 bg-warning text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button (click)="onDeleteSalle(salle.id!)" class="btn p-2 bg-danger text-dark"><i class="fa-solid fa-trash"></i></button>
+          </td>
+          </tr>
+          
+        </tbody>
+      </table>
+      
+    
+    <!-- Button trigger modal -->
+    <button (click)="onCreateClicked()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Ajouter Salle
+    </button>
+    
+    <!--Add Modal -->
+    <form #salleForm="ngForm" (ngSubmit)="onCreateSalle(salleForm.value)" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ajouter Salle</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleInput" class="form-label">Nom de Salle</label>
+              <input type="text" class="form-control" required="true" name="libelle" ngModel id="exampleInput">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInput1" class="form-label">Capacite de Salle</label>
+                <input type="number" class="form-control" required="true" name="capacite" ngModel id="exampleInput1">
+              </div>
+          </div>
+          
+          
+          <div class="modal-footer">
+            <button id="close-model-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+            <button [disabled]="salleForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    <!--Update Modal -->
+    <form #updateForm="ngForm" (ngSubmit)="onUpdateSalle()" class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Ajouter Salle</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Nom de Salle</label>
+                <input type="text" class="form-control" required="true" name="libelle" ngModel id="exampleInput">
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInput1" class="form-label">Capacite de Salle</label>
+                  <input type="number" class="form-control" required="true" name="capacite" ngModel id="exampleInput1">
+                </div>
+            </div>
+            
+            
+            <div class="modal-footer">
+              <button id="close-model-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+              <button [disabled]="updateForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    

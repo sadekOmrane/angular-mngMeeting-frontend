@@ -1,0 +1,13 @@
+.notifier{
+    height: 70px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+}
+
+.notifier > div{
+    display: flex;
+    align-items: center;
+}
+.notifier > div > .fa-solid{
+    margin-right: 10px;
+}

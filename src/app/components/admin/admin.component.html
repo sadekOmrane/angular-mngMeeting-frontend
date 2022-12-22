@@ -1,0 +1,86 @@
+<div style="display: flex;">
+    <div *ngIf="this.tokenServ.isLogged()" class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 250px; height: 100vh;">
+        <a href="/home/reservation" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <h3 style="margin: 0;">GESTREUNION</h3>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li>
+                <a routerLink="/admin" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-solid fa-gauge"></i>
+                    <span>
+                        Dashboard
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a routerLink="./user" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-solid fa-users"></i>
+                    <span>
+                        Utulisateurs
+                    </span> 
+                </a>
+            </li>
+            <li>
+                <a routerLink="./department" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-sharp fa-solid fa-building-user"></i>
+                    <span>
+                        Departments
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a routerLink="./materiel" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-solid fa-toolbox"></i>
+                    <span>
+                        Materieles
+                    </span> 
+                </a>
+            </li>
+            <li>
+                <a routerLink="./salle" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-solid fa-door-open"></i>
+                    <span>
+                        Salles
+                    </span> 
+                </a>
+            </li>
+            <li>
+                <a routerLink="./reservation" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-solid fa-handshake"></i>
+                    <span>
+                        Réunions
+                    </span> 
+                </a>
+            </li>
+            <li>
+                <a routerLink="./reclamtion" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="text-white" class="nav-link text-secondary">
+                    <i class="fa-sharp fa-solid fa-triangle-exclamation"></i>
+                    <span>
+                        Reclamations
+                    </span> 
+                </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a  href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-user-tie"></i>
+                <strong style="margin-left: 10px;">{{this.user.email || "user@user.com"}}</strong>
+                
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" style="cursor: pointer;" (click)="this.authServ.Logout()">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 50px;">
+        <router-outlet></router-outlet>
+    </div>
+    </div>

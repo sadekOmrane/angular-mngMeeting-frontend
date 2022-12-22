@@ -1,0 +1,11 @@
+.nav-link{
+    cursor: pointer;
+}
+.fa-solid{
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+li a span{
+    font-size: 14px;
+}

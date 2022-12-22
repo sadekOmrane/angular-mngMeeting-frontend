@@ -1,0 +1,127 @@
+<div style="width: 900px;">
+    
+    <table class="table">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">salle</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reclamation of recServ.list" style="width: 100%; text-align: center;">
+            <th scope="row">{{reclamation.id}}</th>
+            <td>{{this.getSalleName(reclamation.salle)}}</td>
+            <td>{{reclamation?.etat ? "Traiter" : "En cours"}}</td>
+            <td>
+            <button (click)="ondetailClicked(reclamation.id!)" class="btn p-2 bg-success text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal2"><i class="fa-solid fa-eye"></i></button>
+            <button (click)="onUpdateClicked(reclamation.id!)" class="btn p-2 bg-warning text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button (click)="onDeleteReclamation(reclamation.id!)" class="btn p-2 bg-danger text-dark"><i class="fa-solid fa-trash"></i></button>
+          </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    
+    <!-- Button trigger modal -->
+    <button (click)="onCreateClicked()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Passer Reclamation
+    </button>
+    
+    <!--Add Modal -->
+    <form #reclamationForm="ngForm" (ngSubmit)="onCreateReclamation(reclamationForm.value)" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel">Passer Reclamation</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleInput" class="form-label">Description de Reclamation</label>
+              <textarea class="form-control" rows="4" id="exampleInput" name="description" ngModel></textarea>
+            </div>
+            <label for="exampleInput1" class="form-label">Salle</label>
+            <select name="salle" id="exampleInput1" ngModel required="true" class="form-select" aria-label="Default select example">
+                <option selected="select">Selectionner la Salle</option>
+                <option *ngFor="let salle of this.salles" value="/api/salles/{{salle.id}}">{{salle.libelle}}</option>
+              </select>
+              
+          </div>
+          <div class="modal-footer">
+            <button id="close-model-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+            <button [disabled]="reclamationForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--Update Modal -->
+    <form #updateForm="ngForm" (ngSubmit)="onUpdateReclamation()" class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLabel">Modifier Materiel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Description de Reclamation</label>
+                <textarea class="form-control" rows="4" id="exampleInput" name="description" ngModel></textarea>
+              </div>
+              <label for="exampleInput1" class="form-label">Salle</label>
+              <select name="salle" id="exampleInput1" ngModel required="true" class="form-select" aria-label="Default select example">
+                  <option selected="select">Selectionner la Salle</option>
+                  <option *ngFor="let salle of this.salles" value="/api/salles/{{salle.id}}">{{salle.libelle}}</option>
+                </select>
+                
+            </div>
+            <div class="modal-footer">
+              <button id="close-model-btn1" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+              <button [disabled]="updateForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+
+
+<!--detail Modal -->
+<form #detailForm="ngForm" class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Details de Reclamation</h3>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tbody>
+            <tr>
+              <th scope="row">description</th>
+              <td >{{this.reclamation?.description}}</td>
+            </tr>
+            <tr>
+              <th scope="row">salle</th>
+              <td >{{this.getSalleName(this.reclamation?.salle)}}</td>
+            </tr>
+            <tr>
+              <th scope="row">date</th>
+              <td >{{this.reclamation?.dateRec}}</td>
+            </tr>
+            <tr>
+              <th scope="row">etat</th>
+              <td >{{this.reclamation?.etat ? "Traiter" : "En cours"}}</td>
+            </tr>
+          </tbody>
+        </table>
+          
+      </div>
+      <div class="modal-footer">
+        <button id="close-model-btn2" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+        <button *ngIf="this.user?.roles.indexOf('ROLE_ADMIN') > -1 " type="submit" id="save-btn" (click)="traiterReclamation()" class="btn btn-primary">Traiter</button>
+      </div>
+    </div>
+  </div>
+</form>

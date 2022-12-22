@@ -1,0 +1,110 @@
+<div style="width: 900px;">
+    <h1 style="margin-bottom: 20px; text-align: center;">List Utilisateurs</h1>
+    <table class="table">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Email</th>
+            <th scope="col">Department</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of userServ.list" style="width: 100%; text-align: center;">
+            <th scope="row">{{user.id}}</th>
+            <td>{{user.email}}</td>
+            <td>{{this.getDeptName(user.department)}}</td>
+            <td>
+            <button (click)="onUpdateClicked(user.id!)" class="btn p-2 bg-warning text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button (click)="onDeleteUser(user.id!)" class="btn p-2 bg-danger text-dark"><i class="fa-solid fa-trash"></i></button>
+          </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    
+    <!-- Button trigger modal -->
+    <button (click)="onCreateClicked()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Ajouter Compte
+    </button>
+    
+    <!--Add Modal -->
+    <form #userForm="ngForm" (ngSubmit)="onCreateUser(userForm.value)" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ajouter Utulisateur</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+                <label for="exampleInput" class="form-label">Email</label>
+                <input type="email" name="email" ngModel class="form-control" required="true"  id="email">
+              </div> 
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Mot de Passe</label>
+                <input type="password" class="form-control" name="plainPassword" ngModel required="true"  id="password">
+              </div>  
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label" >Role 1</label>
+                <input type="text" class="form-control" name="roles" ngModel required="true"  id="role1">
+              </div> 
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Role 2</label>
+                <input type="text" class="form-control" name="roles" required="true"  id="role2">
+              </div> 
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Department</label>
+                <select style="margin: 20px 0 0 0;" name="department" ngModel class="mb-3" class="form-select" aria-label="Default select example">
+                  <option selected>Selectionner le Department</option>
+                  <option *ngFor="let department of this.departments"  value="/api/departments/{{department.id}}">{{department.libelle}}</option>
+                </select> 
+              </div>
+              
+          </div>
+          <div class="modal-footer">
+            <button id="close-model-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+            <button [disabled]="userForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--Update Modal -->
+    <form #updateForm="ngForm" (ngSubmit)="onUpdateUser()" class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modifier Utulisateur</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Email</label>
+                <input type="email" name="email" ngModel class="form-control" required="true"  id="email">
+              </div> 
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Mot de Passe</label>
+                <input type="text" class="form-control" name="password" ngModel required="true"  id="password">
+              </div>  
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Role 1</label>
+                <input type="text" class="form-control" required="true"  id="role1">
+              </div> 
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Role 2</label>
+                <input type="text" class="form-control" required="true"  id="role2">
+              </div> 
+              <select style="margin: 20px 0 0 0;" name="department" ngModel class="mb-3" class="form-select" aria-label="Default select example">
+                <option selected>Selectionner le Department</option>
+                <option *ngFor="let department of this.departments"  value="/api/departments/{{department.id}}">{{department.libelle}}</option>
+              </select> 
+            </div>
+            <div class="modal-footer">
+              <button id="close-model-btn1" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+              <button [disabled]="updateForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    

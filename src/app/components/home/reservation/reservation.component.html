@@ -1,0 +1,134 @@
+<div style="width: 900px;">
+  
+    <table class="table">
+        <thead>
+          <tr style="text-align: center;">
+            <th scope="col">#</th>
+            <th scope="col">Responsable</th>
+            <th scope="col">Salle</th>
+            <th scope="col">Date Debut</th>
+            <th scope="col">Date Fin</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of this.resServ.list" style="width: 100%; text-align: center;">
+            <th scope="row">{{reservation.id}}</th>
+            <td>{{this.getRespEmail(reservation.responsable)}}</td>
+            <td>{{this.getSalleName(reservation.salle)}}</td>
+            <td>{{reservation.dateDeb}}</td>
+            <td>{{reservation.dateFin}}</td>
+            <td>
+            <button (click)="onUpdateClicked(reservation.id!)" class="btn p-2 bg-warning text-dark" data-bs-toggle="modal" data-bs-target="#exampleModal1"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button (click)="onDeleteReservation(reservation.id!)" class="btn p-2 bg-danger text-dark"><i class="fa-solid fa-trash"></i></button>
+          </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    
+    <!-- Button trigger modal -->
+    <button (click)="onCreateClicked()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Organiser réunion
+    </button>
+    
+    <!--Add Modal -->
+    <form #reservationForm="ngForm" (ngSubmit)="onCreateReservation(reservationForm.value)" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div style="min-width: 550px;" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLabel">Organiser réunion</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div *ngIf="this.addFormValidator" style="width: 80%; margin: 20px auto 0;" class="alert alert-danger" role="alert">
+            Ajouter les champs correctement dabord <i style="margin-left: 10px; font-size: 20px" class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleInput" class="form-label">Date de Debut</label>
+              <input type="datetime-local" name="dateDeb" ngModel class="form-control" required="true"  id="dateDeb">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInput" class="form-label">Date de Fin</label>
+                <input type="datetime-local" name="dateFin" ngModel class="form-control" required="true"  id="dateFin">
+              </div>  
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Capacité de Salle</label>
+                <input type="number" class="form-control" required="true"  id="capacite">
+              </div> 
+               
+              <button (click)="onRechercheClicked('')" style="margin-bottom: 20px;" type="button" class="btn btn-primary">Rechercher</button>
+              <div id="hiddenBlock" style="display: flex; justify-content: space-between;align-items: center; flex-wrap: wrap;" *ngIf="showSalles">
+                <div *ngFor="let salle of this.salles" class="card g-col-6" style="width: 14rem; margin: 10px 0;">
+                    <div class="card-body">
+                      <h4 class="card-title">{{salle.libelle}}</h4>
+                      <h4 class="card-subtitle mb-2 text-muted">Capacité: {{salle.capacite}}</h4>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <input type="radio" value="{{salle.id}}" name="reserv">
+                    </div>
+                  </div>
+                  <select name="users" ngModel style="margin: 20px 0;" multiple class="mb-3" id="users" class="form-select" aria-label="Default select example">
+                    <option selected>selectionner les Participents</option>
+                    <option *ngFor="let user of this.users" value="/api/users/{{user.id}}">{{user.email}}</option>
+                  </select> 
+              </div>
+              
+          </div>
+          <div class="modal-footer">
+            <button id="close-model-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+            <button [disabled]="reservationForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!--Update Modal -->
+    <form #updateForm="ngForm" (ngSubmit)="onUpdateReservation()" class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title" id="exampleModalLabel">Modifier Materiel</h3>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div *ngIf="this.addFormValidator" style="width: 80%; margin: 20px auto 0;" class="alert alert-danger" role="alert">
+              Ajouter les champs correctement dabord <i style="margin-left: 10px; font-size: 20px" class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="exampleInput" class="form-label">Date de Debut</label>
+                <input type="datetime-local" name="dateDeb" ngModel class="form-control" required="true"  id="dateDeb1">
+              </div>
+              <div class="mb-3">
+                  <label for="exampleInput" class="form-label">Date de Fin</label>
+                  <input type="datetime-local" name="dateFin" ngModel class="form-control" required="true"  id="dateFin1">
+                </div>  
+                <div class="mb-3">
+                  <label for="exampleInput" class="form-label">Capacité de Salle</label>
+                  <input type="number" class="form-control" name="capacite" ngModel required="true"  id="capacite1">
+                </div> 
+                 
+                <button (click)="onRechercheClicked('1')" style="margin-bottom: 20px;" type="button" class="btn btn-primary">Rechercher</button>
+                <div id="hiddenBlock" style="display: flex; justify-content: space-between;align-items: center; flex-wrap: wrap;" *ngIf="showSalles">
+                  <div *ngFor="let salle of this.salles" class="card g-col-6" style="width: 14rem; margin: 10px 0;">
+                      <div class="card-body">
+                        <h4 class="card-title">{{salle.libelle}}</h4>
+                        <h4 class="card-subtitle mb-2 text-muted">Capacité: {{salle.capacite}}</h4>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <input type="radio" value="{{salle.id}}" name="reserv">
+                      </div>
+                    </div>
+                    <select name="users" ngModel style="margin: 20px 0;" multiple class="mb-3" id="users" class="form-select" aria-label="Default select example">
+                      <option selected>selectionner les Participents</option>
+                      <option *ngFor="let user of this.users" value="/api/users/{{user.id}}">{{user.email}}</option>
+                    </select> 
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button id="close-model-btn1" type="button" class="btn btn-secondary" data-bs-dismiss="modal">fermer</button>
+              <button [disabled]="updateForm.invalid" type="submit" id="save-btn" class="btn btn-primary">Enregistrer</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    
